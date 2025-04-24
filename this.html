@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>What is this</h1>
+    <script>
+        /* In Js this keyword refers to the object which currently execute the function */
+        /* The value of this is different for different situation*/
+        console.log('The value of this in global scope : ',this) // window object for browser
+
+        /* What is the value of this inside a function 
+           This is little different
+           Suppose we are in strict mode then the value of this is undefined
+           Sippose we are in non strict mode then the value of this is window
+           Why?
+           Because of this substitution
+           It states that if the value of this undefined or null then js put window object to the this only in non strict mode but not in strict mode for this we get different value of this in function in strict and non strict mode
+        */
+
+        function func1(){
+            console.log("The value of this in function is : ",this)
+        }
+        func1()
+
+        /* Value of this inside a method : Method means the function inside an object 
+           Inside a method this refers to the object from where the function belongs to like sayHello method belongs to the user object so that this inside the sayHello method points the user object and when we try to print this.userName it shows Alex
+        */
+        
+        const user = {
+            userName : "Alex",
+            sayHello : function(){
+                console.log(`Hello my name is : ${this.userName}`)
+            }
+        }
+        user.sayHello()
+
+        /* Value of this inside an arrow function 
+           Arrow function doesn't have it's own this value so it always inherit the value of this from it's lexical enviroment.
+        */
+
+        /* In the below example stuDetails1 is an arrow function so whenever we want to access the value of this.name or this.rollNo it's gives us undefined because we know that arrow function don't have it's own this it inherit the value of this from it's lexical scope so stuDetails1 lexical scope is global scope and there is nothing like name and rollNo so it gives us undefined
+        But in the case of stuDetails2 this is not a arrow function it is normal function but inside the function i use a arrow function so now this arrow function again inherit the value of this from it's laxical scope now it's laxical scope is stuDetails2 method and for this method value of this is the student object for this value of this inside the arrow function become the student object for that we can access name and rollNo.
+        */
+
+        const student = {
+            name : "Ram",
+            rollNo : 19,
+            stuDetails1 : ()=>{
+                console.log(`The roll no of ${this.name} is ${this.rollNo}`) // undefined,undefined
+            },
+            stuDetails2 : function(){
+                const x = ()=>{
+                    console.log(`The roll no of ${this.name} is ${this.rollNo}`) // Ram,19 because point to student object
+                }
+                x()
+            }
+        }
+        student.stuDetails1()
+        student.stuDetails2()
+
+        /* What is the console value inside the function 
+           It will different
+           Now this print undefined because userName is declared with let means if we create any variable using let and const it's not a part of global object (window for browser) and the value of this inside the function is global object means window (for non strict mode) and inside the gobal object there is nothing name as userName so that it gives us undefined
+           But if we create the name varibale using var or without any keyWord then it becomes a part of the global object so that inside the function we can access them using this.userName
+        */
+
+        let userName1 = "Soumyajit"
+        var userName2 = "Rohit"
+        userName3 = "Ram"
+
+        function sayUserName(){
+            console.log(`Username1 is : ${this.userName1}`) // undefined
+            console.log(`Username2 is : ${this.userName2}`) // Rohit
+            console.log(`Username3 is : ${this.userName3}`) // Ram
+        }
+        sayUserName()
+
+        /* call, apply and bind
+           In javascript the value of this is depends how a function is called so sometimes we have to provide the this value explicitly then these methods are helpfull
+        */
+
+        /* Suppose we have a standalone function and two user object like u1,u2 now i have to code something both the two object can use the function */
+
+        function sayDetails(designation,hobby){
+            console.log(`Username is : ${this.name} and age is ${this.age} and designation is ${designation} and hobby is ${hobby}`)
+        }
+        const u1 = {name : "Soumyajit", age : 22}
+        const u2 = {name : "Rohit", age : 27}
+
+        /* call() method 
+           Calls function immediatly
+           Takes the value of this as first argument
+           Then takes rest of the argument with comma separated format 
+        */
+
+        sayDetails.call(u1,"Software Developer","Travelling")
+        sayDetails.call(u2,"Data Analyst","Cooking")
+
+        /* apply() method
+           Calls function immediatly same as call
+           Takes the value of this as first argument
+           Then takes rest of the argument in an array form
+        */
+
+        sayDetails.apply(u1,["Software Developer","Travelling"])
+
+        /* bind() method
+           Do not call the function immediatly rather then it returns a new function
+           Takes the value of this as first argument
+           Then takes rest of the argument in comma separted format
+        */
+
+        const newFunction = sayDetails.bind(u2,"Data Analyst","Cooking")
+        console.log(newFunction) // This is a function which is return by the bind() method
+        newFunction()
+
+    </script>
+</body>
+</html>
