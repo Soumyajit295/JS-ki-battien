@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce vs Throttle</title>
+    <style>
+      body {
+        height: 300vh;
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      .container {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="container">
+      <h1>Normal count <span id="normal_count">0</span></h1>
+      <h1>Debounce count <span id="debounce_count">0</span></h1>
+      <h1>Throttle count <span id="throttle_count">0</span></h1>
+    </div>
+
+    <script>
+      const normal_display = document.querySelector("#normal_count");
+      const debounce_display = document.querySelector("#debounce_count");
+      const throttle_display = document.querySelector("#throttle_count");
+
+      const normalCount = () => {
+        let count = 0;
+        return function () {
+          count++;
+          normal_display.textContent = count;
+        };
+      };
+
+      const debounceCount = (limit) => {
+        let count = 0;
+        let timer;
+        return function () {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            count++;
+            debounce_display.textContent = count;
+          }, limit);
+        };
+      };
+
+      const throttleCount = (limit) => {
+        let count = 0;
+        let flag = true;
+        return function () {
+          if (flag) {
+            count++;
+            throttle_display.textContent = count;
+            flag = false;
+            setTimeout(() => {
+              flag = true;
+            }, limit);
+          }
+        };
+      };
+
+      const normal = normalCount();
+      const debounce = debounceCount(500);
+      const throttle = throttleCount(500);
+
+      window.addEventListener("scroll", () => {
+        normal();
+        debounce();
+        throttle();
+      });
+    </script>
+  </body>
+</html>
