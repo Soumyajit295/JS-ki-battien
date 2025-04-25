@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Stack</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #1e293b, #0f172a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #334155;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #94a3b8;
+      padding-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      font-size: 18px;
+      margin: 10px 0;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    li:hover {
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Tech Stack</h1>
+    <ul>
+      <li>REACT</li>
+      <li>REDUX</li>
+      <li>EXPRESS</li>
+      <li>MONGODB</li>
+    </ul>
+  </div>
+  <script>
+    /* Event Delegation : It states that rather than attaching individual eventListener to each and every child we attach a single eventListener to the parent which capture the event from the child due to event bublling */
+
+    /* With out event delegation : We catch all li and add eventListener to each of these which is not efficient */
+
+    const listItems = document.querySelectorAll('li')
+    listItems.forEach((listItem)=>{
+        listItem.addEventListener('click',(e)=>{
+            alert(`${e.target.textContent} is clicked`)
+        })
+    })
+
+    /* With Event Delegation */
+
+    const unorderedList = document.querySelector('ul')
+    unorderedList.addEventListener('click',(e)=>{
+        alert(`${e.target.textContent} is clicked`)
+    })
+  </script>
+</body>
+</html>
