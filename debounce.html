@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce Example</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      input {
+        padding: 10px;
+        width: 250px;
+        font-size: 16px;
+      }
+      p {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Debounce Input</h2>
+    <input type="text" id="searchInput" placeholder="Type something..." />
+    <p><strong>Debounced Output:</strong> <span id="debouncedOutput"></span></p>
+
+    <script>
+      /* 
+  Debouncing helps limit the rate at which a function is called, which can significantly improve overall app performance.
+
+  How it works:
+  When an event is triggered repeatedly—such as typing in an input field—the associated function is typically called on every event (e.g., every keystroke). This can lead to performance issues.
+
+  Debouncing solves this by ensuring the function is only executed if timegap between two keystroke event is grater then the specified delay like 500 or 300ms
+
+  Example:
+  Imagine a search bar that calls a `search()` function on every keystroke. Without debouncing, it would call the API on each key press, which is inefficient.
+
+  With debouncing, the `search()` function is only called when the user stops typing for at least 500 milliseconds, reducing unnecessary calls and improving efficiency.
+*/
+
+      const input = document.querySelector("#searchInput");
+      const output = document.querySelector("#debouncedOutput");
+
+      const search = (query) => {
+        console.log(`Searching for ${query}`);
+        output.textContent = query;
+      };
+
+      const debounce = (func, delay) => {
+        let timer;
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            func.call(this, args);
+          }, delay);
+        };
+      };
+
+      const debouncedSearch = debounce(search, 500);
+
+      input.addEventListener("keyup", (e) => {
+        debouncedSearch(e.target.value);
+      });
+    </script>
+  </body>
+</html>
