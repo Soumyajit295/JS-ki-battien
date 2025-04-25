@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Bubbling and Capturing in JavaScript</h1>
+    <div class="one">
+        <div class="two">
+            <button class="three">Click me</button>
+        </div>
+    </div>
+    <script>
+        /* Event bubbling and capturing describe the order in which events propagate through the DOM.
+
+        In case of bubbling (default), when an event occurs, it propagates from the target element (button) to the parent elements (button -> div.two -> div.one).
+
+        In case of capturing, the event propagates from the top (div.one) to the target element (button).
+        */
+        
+        const one = document.querySelector('.one');
+        const two = document.querySelector('.two');
+        const three = document.querySelector('.three');
+
+        // Bubbling (default behavior)
+        one.addEventListener('click', () => {console.log('One clicked');});  // Bubbling phase (default)
+        two.addEventListener('click', () => {console.log('Two clicked');});  // Bubbling phase (default)
+        three.addEventListener('click', () => {console.log('Three clicked');});  // Bubbling phase (default)
+
+        // If we want event capturing then we have to pass true as a parameter in addEventListener method
+
+
+        /* If we want to stop propagation then we do this */
+        
+        three.addEventListener('click',(e)=>{
+            console.log("Three clicked")
+            e.stopPropagation()
+        })
+
+    </script>
+</body>
+</html>
