@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Concept of throttle</h1>
+
+    <script>
+
+        /* 
+        Throttling is used to limit how frequently a function is called, especially when that function is triggered by high-frequency events like `resize`, `scroll`, or `mousemove`.
+
+         Without throttling:
+         The function will be called on every single event, which can be inefficient and cause performance issues.
+
+         With throttling:
+         Throttling ensures that the function is only called once per specified time interval, no matter how many events occur during that time.
+
+         Example:
+         Suppose we have a function that performs an expensive operation on window resize.
+         Without throttling, it would execute on every small change in window size.
+         With throttling (e.g., a 500ms interval), the function will only be called at most once every 500ms, improving performance.
+       */
+
+        const expensiveCall = (currentWidth)=>{
+            console.log(`Make the call when width is ${currentWidth}`)
+        }
+
+        const throttle = (fun,limit)=>{
+            let flag = true
+            return function(...args){
+                if(flag){
+                    fun.apply(this,args)
+                    flag = false
+                    setTimeout(()=>{
+                        flag = true
+                    },limit)
+                }
+            }
+        }
+
+        const throttleExpensiveCall = throttle(expensiveCall,500)
+
+        window.addEventListener('resize',(e)=>{
+            throttleExpensiveCall(e.target.innerWidth)
+        })
+
+    </script>
+  </body>
+</html>
