@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* Constructor function is same like a normal function when we call it with new keyword then it creates an empty object and set this to the object */
+
+      function User(name, age) {
+        (this.name = name),
+          (this.age = age),
+          (this.greet = function () {
+            console.log(`Username ${this.name}`);
+          });
+      }
+      
+      const u1 = new User("Jit", 18);
+      console.log(u1);
+      console.log(User.prototype);
+
+      /* What is the use of new keyword */
+
+      /* The new keyword is used to create an instance of constructor function 
+        
+           What happend behind the scence
+
+           1. Create a empty object
+           2. Links the object to the constructor's prototype : obj.__proto__ = User.prototype
+           3. Binds the this to the obj and pass the rest arguments User.apply(obj,...args)
+           4. Return the obj : return obj
+
+           If we forger to use this keyword then this refers to the global object or undefined for strict mode
+        
+        */
+
+      function normalUser(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      const obj = {};
+      obj.__proto__ = normalUser.prototype;
+      normalUser.apply(obj, ["Soumya", 22]);
+
+      console.log(obj);
+
+    </script>
+  </body>
+</html>
