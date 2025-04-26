@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* Prototype : Every javascript function has prototype property. The property is an object whcih containd methods and properties whcih is shared with all instance created by the function when it is used as constructor
+        
+        Usage : When we add methods inside the function's prototype then all instance created by the function can access those method below is the code example 
+        */
+
+        function Person(name){
+            this.name = name
+        } 
+        Person.prototype.sayHello = function(){
+            console.log(`Hello my name is ${this.name}`)
+        }
+
+        const p1 = new Person("Soumyajit")
+        const p2 = new Person("Riya")
+
+        /* Both the instance has the access of sayHello function */
+
+        p1.sayHello()
+        p2.sayHello()
+
+        /* __proto__ : This is a hidden property of object it refers to the prototype from it inherits the properties and methods 
+        
+        Means we can say that __proto__ of p1 object and prototype of the Person function is same
+        */
+
+        console.log(p1.__proto__ === Person.prototype) // true
+
+        
+    </script>
+</body>
+</html>
