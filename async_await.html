@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        async function is used to write asynchronous code in a more readable and synchronous-like manner.
+
+        async/await is syntactic sugar over Promises.
+
+        But why do we call it syntactic sugar?
+        Because, similar to Promises where we use the .then() method to execute callbacks after a Promise is resolved, 
+        in async functions, the await keyword does the same work behind the scenes.
+
+        Does async/await block the main thread?
+        No, it does not block the main thread.
+
+        How?
+        When an async function is invoked, it is pushed into the call stack. 
+        When the JavaScript engine encounters the await keyword, it suspends the execution of the async function, 
+        meaning the async function is popped out of the call stack. 
+        However, the Promise behind the await continues to run in the background.
+
+        Once the Promise is settled (either resolved or rejected) and the call stack is empty, 
+        the async function is pushed back into the call stack, 
+        and execution resumes exactly from the line where it was suspended.
+
+      This is how async/await handles asynchronous tasks beautifully without blocking the main thread.
+    */
+
+      async function getData() {
+        console.log("Start fetching");
+        const rawData = await fetch("https://fakestoreapi.com/products/1");
+        const data = await rawData.json();
+        console.log(data);
+      }
+      getData();
+
+      /* Explanation : When the getData function is invoked, it is pushed into the callstack and starts executing.
+          The first line console.log("Start fetching") runs synchronously and immediately prints the message.
+
+          When the JavaScript engine encounters the first await keyword (await fetch(...)), it suspends the execution of the getData function and pops it out of the callstack.
+          Meanwhile, the Promise returned by fetch() continues running in the background.
+
+          Once the Promise is fulfilled, and if the callstack is empty, the getData function is pushed back into the callstack to resume execution from where it left off. The resolved value (the Response object) is then stored into the rawData variable.
+
+          Immediately after, the engine encounters another await on rawData.json(), which also returns a Promise.
+          Again, the getData function is suspended and popped out from the callstack.
+
+          When the json() Promise resolves, getData is pushed back into the callstack. The parsed JSON (the product details) is stored in the data variable.
+
+          Finally, console.log(data) runs and prints the product details to the console.
+      */
+
+      const p1 = new Promise((res, rej) => {
+        setTimeout(() => {
+          res(`Promise1 is resolved`);
+        }, 5000);
+      });
+
+      const p2 = new Promise((res, rej) => {
+        setTimeout(() => {
+          res(`Promise2 is resolved`);
+        }, 10000);
+      });
+
+      async function func1() {
+        const data1 = await p1;
+        console.log("Done with promise1");
+        console.log(data1);
+
+        const data2 = await p2;
+        console.log("Done with promise2");
+        console.log(data2);
+      }
+
+      func1();
+
+      /*    When the fun1 function is invoked, it is pushed into the callstack and starts executing.
+
+            Inside fun1, the first statement encounters an await p1.
+            await suspends the execution of fun1 and pops it out of the callstack while the Promise p1 continues running in the background.
+
+            The main thread remains free to handle other tasks during this time (since JavaScript is non-blocking).
+
+            After approximately 5 seconds, p1 resolves. If the callstack is empty, fun1 is pushed back into the callstack, and execution resumes from where it was paused.
+
+            The resolved value ("Promise1 resolved") is assigned to data1, and then:
+
+            console.log("We done with promise1") is printed.
+
+            console.log(data1) prints the value of data1.
+
+            Immediately after that, the engine encounters the next await p2.
+            Again, fun1 suspends and pops from the callstack while waiting for p2 to resolve.
+
+            After approximately 10 seconds, p2 resolves. Once resolved and if the callstack is free, fun1 is pushed back again into the callstack.
+
+            The resolved value ("Promise2 resolved") is assigned to data2, and then:
+
+            console.log("We done with promise2") is printed.
+
+            console.log(data2) prints the value of data2.
+
+      */
+    </script>
+  </body>
+</html>
