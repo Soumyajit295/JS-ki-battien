@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>Click to console name</button>
+    <script>
+        /* Callback : When a function is passed to another function is known as callback , the function whuich takes the callback funtion as an parameter it is known as higher order function */
+
+        function hof(callback){
+            console.log(`Hello i am higher order function`)
+            callback()
+        }
+
+        function callBackFunction(){
+            console.log(`Hello i am callback function`)
+        }
+
+        hof(callBackFunction)
+
+        /* setTimeout function : Which takes a function as a callback function which is execute after 3000 ms*/
+
+        setTimeout(function(){
+            console.log(`Hello i am setTimeout function`)
+        },3000)
+
+        /* addEventListener function : Which takes the event name and a callback function when the event is occured then callback function execute */
+
+        document.querySelector('button').addEventListener('click',function(){
+            console.log(`Hello i am soumyajit`)
+        })
+
+
+    </script>
+</body>
+</html>
